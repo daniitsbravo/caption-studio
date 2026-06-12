@@ -101,6 +101,35 @@ Variables** (y redeploya):
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `ANTHROPIC_API_KEY`
 
+## Procesado por lotes (carpetas enteras)
+
+Para sesiones grandes (cientos o miles de fotos) no hace falta usar la web:
+el script `scripts/batch.mjs` apunta a una carpeta de tu disco y él solo
+evalúa todas las fotos, descarta las flojas, agrupa las mejores en posts con
+criterio editorial y genera los captions, que aparecen en el Historial.
+
+```bash
+# Probar sin subir nada (evalúa y propone grupos):
+node scripts/batch.mjs --dir "/ruta/a/la/sesion" --dry-run
+
+# Ejecución real:
+node scripts/batch.mjs --dir "/ruta/a/la/sesion" --posts 10
+
+# Sesiones que no son de arquitectura:
+node scripts/batch.mjs --dir "/ruta/a/la/boda" --tema "bodas" --posts 6
+```
+
+Opciones: `--posts` (máx. de posts, defecto 8), `--limit` (procesar solo las
+primeras n fotos), `--tema` (sector del contenido), `--email`/`--password`
+(cuenta donde guardar; por defecto `CAPTIONSTUDIO_EMAIL`/`CAPTIONSTUDIO_PASSWORD`
+de `.env.local`), `--dry-run`.
+
+Cómo funciona por dentro: evaluación visual por tandas (puntuación +
+descripción por foto) → la agrupación se hace sobre las descripciones en texto
+(una sola llamada ve el inventario completo, escala a miles de fotos) → solo
+las fotos elegidas se suben a Storage y pasan por el análisis visual final del
+caption. Requiere macOS (usa `sips` para redimensionar).
+
 ## Límites y consideraciones
 
 - Máximo **10 imágenes** por sesión de generación
