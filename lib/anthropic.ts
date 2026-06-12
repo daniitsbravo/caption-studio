@@ -1,8 +1,8 @@
 import Anthropic from '@anthropic-ai/sdk'
 
-// AVISO: claude-sonnet-4-20250514 está deprecado y se retira el 15/06/2026.
-// Cambia a "claude-sonnet-4-6" vía la variable de entorno CLAUDE_MODEL.
-export const CLAUDE_MODEL = process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-20250514'
+// El modelo original del spec (claude-sonnet-4-20250514) está retirado para
+// claves nuevas (404). Se usa su reemplazo oficial; se puede cambiar vía env.
+export const CLAUDE_MODEL = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6'
 
 export function getAnthropicClient() {
   const apiKey = process.env.ANTHROPIC_API_KEY

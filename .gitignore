@@ -35,3 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scripts de prueba locales (contienen credenciales de test)
+/scripts/e2e-test.mjs
